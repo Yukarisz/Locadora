@@ -1,10 +1,8 @@
 package com.example.locadora.controller;
 
-import com.example.locadora.exception.ResourceNotFoundException;
-import com.example.locadora.model.Cliente;
-import com.example.locadora.repository.ClienteRepository;
+import com.example.locadora.dto.ClienteDto;
+import com.example.locadora.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,34 +14,24 @@ import java.util.List;
 public class ClienteController {
 
     @Autowired
-    ClienteRepository clienteRepository;
+    ClienteService clienteService;
 
 
     @GetMapping("/clientes")
-    public List<Cliente> getAllNotes() {
-        return clienteRepository.findAll();
+    public List<ClienteDto> getAllNotes() {
+        return clienteService.buscarClientes();
     }
 
     @PostMapping("/clientes")
-    public Cliente createCliente(@Valid @RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public void createCliente(@Valid @RequestBody ClienteDto cliente) {
+         clienteService.salvarCliente(cliente);
     }
 
     @GetMapping("/clientes/{id}")
-    public Cliente getClienteById(@PathVariable(value = "id") Long clienteId) {
-        return clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", clienteId));
+    public ClienteDto getClienteById(@PathVariable(value = "id") Long clienteId) {
+        return clienteService.buscarCliente(clienteId);
+
     }
 
-
-
-    @DeleteMapping("/clientes/{id}")
-    public ResponseEntity<?> deleteCliente(@PathVariable(value = "id") Long clienteId) {
-        Cliente cliente = clienteRepository.findById(clienteId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente", "id", clienteId));
-
-        clienteRepository.delete(cliente);
-
-        return ResponseEntity.ok().build();
-    }
 }
+
