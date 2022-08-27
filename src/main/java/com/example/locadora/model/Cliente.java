@@ -14,6 +14,18 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "Clientes")
 public class Cliente {
 
+    public Cliente(){
+
+    }
+
+    public Cliente(Long id,Carro idCarro, String cpf, String nome, String endereco) {
+        this.id = id;
+        this.idCarro = idCarro;
+        this.cpf = cpf;
+        this.nome = nome;
+        this.endereco = endereco;
+
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,3 +49,4 @@ public class Cliente {
 
 
 }
+
